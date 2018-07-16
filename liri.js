@@ -28,7 +28,7 @@ client.get('statuses/user_timeline', { screen_name: 'WWE', count: 20 },function(
 
 else if (command === "spotify-this-song"){
 var spotify = new Spotify(keys.spotify);
-    // var query = process.argv[3];
+    
     spotify.search({ type: 'track', query: 'dancing in the moonlight' }, function(err, data) {
         if (err) {
             console.log(err);
@@ -38,9 +38,25 @@ var spotify = new Spotify(keys.spotify);
 console.log(data);
 });}
 
-// else if(command = "movie-this"){
+else if(command = "movie-this"){
+   var query = process.argv[3];
+  request("http://www.omdbapi.com/?t=" + query + "&y=t&tomatoes=true&apikey=bbee064", function(error, response, body) {
 
-// }
+    if (!error && response.statusCode === 200) {
+
+          console.log("Title: " + JSON.parse(body).Title + '\n' +
+          "Release Year: " + JSON.parse(body).Year + '\n' +
+          "IMDb Rating: " + JSON.parse(body).imdbRating + '\n'+
+          "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value + '\n'+
+          "Production Studio & Country: " + JSON.parse(body).Production + ", " + JSON.parse(body).Country+ '\n'+
+          "Language: " + JSON.parse(body).Language + '\n' +
+          "Plot Summary: " + JSON.parse(body).Plot + '\n' +
+          "Cast: " + JSON.parse(body).Actors + '\n' 
+        );
+        }
+      });
+
+}
 
 // else if(command = "do-what-it-says"){
 
