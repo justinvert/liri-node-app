@@ -1,7 +1,8 @@
 var needed = require("dotenv").config();
 var request = require('request');
 var Twitter = require('twitter');
-var Spotify = require('node-spotify-api');
+var Spotify = require('spotify');
+var fs = require('fs');
 var keys = require('./keys.js');
 
 
@@ -28,7 +29,7 @@ client.get('statuses/user_timeline', { screen_name: 'WWE', count: 20 },function(
 
 else if (command === "spotify-this-song"){
 var spotify = new Spotify(keys.spotify);
-    
+// var query = process.argv[3];
     spotify.search({ type: 'track', query: 'dancing in the moonlight' }, function(err, data) {
         if (err) {
             console.log(err);
@@ -47,7 +48,7 @@ else if(command = "movie-this"){
           console.log("Title: " + JSON.parse(body).Title + '\n' +
           "Release Year: " + JSON.parse(body).Year + '\n' +
           "IMDb Rating: " + JSON.parse(body).imdbRating + '\n'+
-          "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value + '\n'+
+          "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1] + '\n'+
           "Production Studio & Country: " + JSON.parse(body).Production + ", " + JSON.parse(body).Country+ '\n'+
           "Language: " + JSON.parse(body).Language + '\n' +
           "Plot Summary: " + JSON.parse(body).Plot + '\n' +
@@ -58,8 +59,14 @@ else if(command = "movie-this"){
 
 }
 
-// else if(command = "do-what-it-says"){
-
-// }
+else if(command = "do-what-it-says"){
+ 
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    if (error) {
+      return console.log(error);
+    }
+    console.log(data);
+  });
 }
-start();
+};
+start(); 
