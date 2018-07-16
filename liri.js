@@ -48,7 +48,7 @@ else if(command = "movie-this"){
           console.log("Title: " + JSON.parse(body).Title + '\n' +
           "Release Year: " + JSON.parse(body).Year + '\n' +
           "IMDb Rating: " + JSON.parse(body).imdbRating + '\n'+
-          "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1] + '\n'+
+          "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value + '\n'+
           "Production Studio & Country: " + JSON.parse(body).Production + ", " + JSON.parse(body).Country+ '\n'+
           "Language: " + JSON.parse(body).Language + '\n' +
           "Plot Summary: " + JSON.parse(body).Plot + '\n' +
@@ -59,7 +59,7 @@ else if(command = "movie-this"){
 
 }
 
-else if(command = "do-what-it-says"){
+if(command = "do-what-it-says"){
  
   fs.readFile("random.txt", "utf8", function(error, data) {
     if (error) {
