@@ -13,11 +13,17 @@ switch (command){
   case "my-tweets":
     start();
     break;
+
     case "spotify-this-song":
     spotify();
     break;
+
     case "movie-title":
     movie();
+    break;
+
+    case "do-what-it-says":
+    textfile();
     break;
 }
 
@@ -37,10 +43,10 @@ client.get('statuses/user_timeline', { screen_name: 'WWE', count: 20 },function(
 function spotify(){
 var spotify = new Spotify(keys.spotify);
 // var query = process.argv[3];
-    spotify.search({ type: 'track', query: 'dancing in the moonlight' }, function(err, data) {
+    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
         if (err) {
-            console.log(err);
-            return;
+            return console.log(err);
+            
         }
         
 console.log(data);
@@ -66,12 +72,12 @@ function movie(){
       });
 }
 
-// if(command = "do-what-it-says"){
+function textfile(){
  
-//   fs.readFile("random.txt", "utf8", function(error, data) {
-//     if (error) {
-//       return console.log(error);
-//     }
-//     console.log(data);
-//   });
-// }
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    if (error) {
+      return console.log(error);
+    }
+    console.log(data);
+  });
+}
