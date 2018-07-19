@@ -47,8 +47,9 @@ var spotify = new Spotify(keys.spotify);
         if (!err) {
             // return console.log(data.tracks.items[1]);
           
-            var spotifyData = data.tracks.items[1];
-            console.log(spotifyData.album.artists);
+            var spotifyData = data.tracks.items[0];
+            console.log(spotifyData.album.name);
+            console.log(spotifyData.artists.href);
         }
         // var spotifyData = data.tracks.items[1];
         // console.log(spotifyData.href);
