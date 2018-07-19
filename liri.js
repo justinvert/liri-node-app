@@ -44,12 +44,15 @@ function spotify(){
 var spotify = new Spotify(keys.spotify);
 // var query = process.argv[3];
     spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-        if (err) {
-            return console.log(err);
-            
+        if (!err) {
+            // return console.log(data.tracks.items[1]);
+          
+            var spotifyData = data.tracks.items[1];
+            console.log(spotifyData.album.artists);
         }
-        
-console.log(data);
+        // var spotifyData = data.tracks.items[1];
+        // console.log(spotifyData.href);
+// console.log(data.artist);
 });
 }
 
