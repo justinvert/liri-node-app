@@ -6,12 +6,12 @@ var fs = require('fs');
 var keys = require('./keys.js');
 
 
-
+var text;
 var command = process.argv[2];
 
 switch (command){
   case "my-tweets":
-    start();
+    twitter();
     break;
 
     case "spotify-this-song":
@@ -40,21 +40,29 @@ client.get('statuses/user_timeline', { screen_name: 'WWE', count: 20 },function(
 }
   
 
-function spotify(){
+function spotify(x){
 var spotify = new Spotify(keys.spotify);
-// var query = process.argv[3];
-    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+
+if (x){
+now = x;}
+else{
+var now = process.argv[3];
+}
+
+    spotify.search({ type: 'track', query: now }, function(err, data) {
         if (!err) {
-            // return console.log(data.tracks.items[1]);
+         
           
             var spotifyData = data.tracks.items[0];
-            console.log(spotifyData.name)
-            console.log(spotifyData.album.name);
-            console.log(spotifyData.artists[0].name);
+            console.log("\n-----------------------")
+            console.log("Artist: " + spotifyData.artists[0].name);
+            console.log("Song: " + spotifyData.name)
+            console.log("Album: " + spotifyData.album.name);
+            console.log("Preview URL: " + spotifyData.preview_url  + " *")
+            console.log("\n-----------------------")
+            console.log("\n*Note - some songs do not provide a preview URL")
         }
-        // var spotifyData = data.tracks.items[1];
-        // console.log(spotifyData.href);
-// console.log(data.artist);
+
 });
 }
 
@@ -80,9 +88,15 @@ function movie(){
 function textfile(){
  
   fs.readFile("random.txt", "utf8", function(error, data) {
-    if (error) {
-      return console.log(error);
+    if (!error) {
+      var textData = data.split(",");
+    
+switch(textData[0]){
+    case "spotify-this-song":
+    spotify(textData[1]);
+    break;
+}
     }
-    console.log(data);
+  
   });
 }
