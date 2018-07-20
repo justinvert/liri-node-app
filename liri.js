@@ -4,6 +4,8 @@ var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var fs = require('fs');
 var keys = require('./keys.js');
+var moment = require('moment');
+moment().format();
 
 
 var text;
@@ -29,13 +31,29 @@ switch (command){
 
 function twitter(){
 var client = new Twitter(keys.twitter);
-
-client.get('statuses/user_timeline', { screen_name: 'WWE', count: 20 },function(error, tweets, response) {
+var count = 20;
+client.get('statuses/user_timeline', { screen_name: 'WWE', count: count },function(error, tweets, response) {
   if (!error) {
     for (var i = 0; i < tweets.length; i++) {
 
-      console.log('Tweet number: ' + ( i + 1 ) + '\n' + "Creation date & time: " +  tweets[i].created_at + '\n' + "Text: " + tweets[i].text + '\n');}
+      console.log('Tweet number: ' + ( i + 1 ) + '\n' + "Creation date & time: " +  tweets[i].created_at + '\n' + "Text: " + tweets[i].text + '\n');
+
+      fs.appendFile('log.txt',  "\r\n" +
+      "Data creation: " + moment().format('MMMM Do YYYY, h:mm:ss a') + 
+      "\r\n-----------------------\r\n" +
+      'Tweet number: ' + ( i + 1 ) + '\n' +
+      "Creation date & time: " +  tweets[i].created_at + '\n' + 
+      "Text: " + tweets[i].text +'\n', function(err) {
+
+      });
+ 
     }
+  
+   }
+   else{
+      console.log("Sorry, there was an error.");
+    }
+    
   });
 }
   
@@ -62,8 +80,25 @@ var now = process.argv[3];
             console.log("\n-----------------------")
             console.log("\n*Note - some songs do not provide a preview URL")
         }
+        else {
+          console.log("Sorry, there was an error.");
+        }
+        fs.appendFile('log.txt',  "\r\n" +
+        "Data creation: " + moment().format('MMMM Do YYYY, h:mm:ss a') + 
+        "\r\n-----------------------\r\n" +
+          "Artist: " + spotifyData.artists[0].name + '\n' +
+          "Song: " + spotifyData.name + '\n' +
+          "Album: " + spotifyData.album.name + '\n' +
+          "Preview URL: " + spotifyData.preview_url  + " *" + '\n' +
+          "*Note - some songs do not provide a preview URL" +  '\n', function(err) {
+
+            console.log("Content added to log.txt");
+  
+          });
+          
 
 });
+
 }
 
 function movie(){
@@ -80,8 +115,27 @@ function movie(){
           "Language: " + JSON.parse(body).Language + '\n' +
           "Plot Summary: " + JSON.parse(body).Plot + '\n' +
           "Cast: " + JSON.parse(body).Actors + '\n' 
-        );
+        )
         }
+        else{
+          console.log("Sorry, there was an error.");
+        }
+        fs.appendFile('log.txt', "\r\n" +
+        "Data creation: " + moment().format('MMMM Do YYYY, h:mm:ss a') + 
+        "\r\n-----------------------\r\n" +
+        "Title: " + JSON.parse(body).Title + '\n' +
+        "Release Year: " + JSON.parse(body).Year + '\n' +
+        "IMDb Rating: " + JSON.parse(body).imdbRating + '\n'+
+        "Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value + '\n'+
+        "Production Studio & Country: " + JSON.parse(body).Production + ", " + JSON.parse(body).Country+ '\n'+
+        "Language: " + JSON.parse(body).Language + '\n' +
+        "Plot Summary: " + JSON.parse(body).Plot + '\n' +
+        "Cast: " + JSON.parse(body).Actors + '\n' , function(err) {
+
+          console.log("Content added to log.txt");
+
+        });
+
       });
 }
 
@@ -96,6 +150,9 @@ switch(textData[0]){
     spotify(textData[1]);
     break;
 }
+    }
+    else{
+      console.log("Sorry, there was an error.");
     }
   
   });
