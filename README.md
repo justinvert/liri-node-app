@@ -12,7 +12,9 @@ After doing an <a href="https://docs.npmjs.com/cli/install">npm install</a>, the
 The format for these commands is
 ```
 node liri.js [command name] [additional information if needed]
+```
 or in other terms:
+```
 node liri.js [2] [3]
 ```
 *  `my-tweets`
